@@ -165,17 +165,42 @@ class PropertiesClass{
 			if($atts['filters']==true){
 				$property_listing .= '<div class="property-filters-wrapper">';
 				$property_listing .= '<div class="property-filters-container">';
-				//$property_listing .= 'filters here'; 				//TODO: ADD FILTERS HTML
+				$prop_filters = new FiltersClass; 				//TODO: ADD FILTERS HTML
+				$property_listing .= $prop_filters->property_filters();
 				$property_listing .= '</div></div>';
+				$args = array();
+				
 			}
+
 			// prepare html in a variable 
 			$property_listing .= '<div class="property-listing-wrapper section">';
 			$property_listing .= '<div class="property-listing-container row">';
 			$args = array(
 				'post_type' => 'property',
 				'posts_per_page' => isset($atts['per_page']) ? $atts['per_page'] : 6 ,
-				'paged' => get_query_var( 'paged' )
+				'paged' => get_query_var( 'paged' ),
+				
 			);
+			if(isset($_GET['tenure'])){	// STATIC QUERY FOR NOW. TODO: MAKE THE QUERIES DYNAMIC LIKE FILTERS
+				$args['tax_query'] = array(
+			        array(
+			            'taxonomy' => 'tenure',
+			            'field'    => 'term_id',
+			            'terms'    => $_GET['tenure'],
+			        ),
+			       );
+			}
+			if(isset($_GET['price'])){				//BUG. Not working if price value is not added to properties
+				// $args['meta_query'] = array(
+				// 	array(
+			 //            'key'     => 'price',
+			 //            'value'   => $_GET['price'],
+			 //            'compare' => '<=',
+			 //        ),
+			    
+				// );
+			}
+			//echo '<pre>';print_r($args);echo '</pre>';
 			$properties = new WP_Query($args);
 			if($properties->have_posts()):
 				while($properties->have_posts()): 
@@ -202,16 +227,22 @@ class PropertiesClass{
 					$property_listing .= '</div>';
 					$property_listing .= '</div>';
 				endwhile;
-					if(isset($atts['loadmore']) && $atts['loadmore'] == true){
+					$total_pages = $properties->max_num_pages;
+					if(isset($atts['loadmore']) && $atts['loadmore'] == true && $total_pages > 1){
+					// echo '<pre>';print_r($properties->max_num_pages);echo '</pre>';
 						$property_listing .= '<div class="properties-loadmore-wrapper">';
 						$property_listing .= '<button type="button" class="btn btn-secondary" id="properties-loadmore">Load More</button>';
 						$property_listing .= '<input type="hidden" id="property-listing-page" value="1"/>';
 						$property_listing .= '<input type="hidden" id="property-listing-perpage" value="'.$args['posts_per_page'].'"/>';
+						if(isset($_GET['tenure'])){
+							$property_listing .= '<input type="hidden" id="property-listing-tenure" value="'.$_GET['tenure'].'"/>';
+
+						}
+						// $property_listing .= '<input type="hidden" id="property-listing-price" value="'.$_GET['price'].'"/>';
 						// $property_listing .= '<input type="hidden" id="property-listing-perpage" value="'.$args['posts_per_page'].'"/>';
 						$property_listing .= '</div>';
 					}else{
-						$total_pages = $properties->max_num_pages;
-
+						
 				    if ($total_pages > 1){
 
 				        $current_page = max(1, get_query_var('paged'));
@@ -240,7 +271,7 @@ class PropertiesClass{
 		// Set vars
 		$current_page = filter_var($_POST['paged'],FILTER_SANITIZE_NUMBER_INT );
 		$per_page = filter_var($_POST['posts_per_page'],FILTER_SANITIZE_NUMBER_INT );
-		
+		$tenure = filter_var($_POST['tenure'],FILTER_SANITIZE_NUMBER_INT );
 		// prepare html in a variable 
 		$property_listing .= '<div class="property-listing-wrapper section">';
 		$property_listing .= '<div class="property-listing-container row">';
@@ -249,6 +280,15 @@ class PropertiesClass{
 			'posts_per_page' => isset($per_page) ? $per_page : 6 ,
 			'paged' => $current_page
 		);
+		if(!empty($tenure)){
+			$args['tax_query'] = array(
+			        array(
+			            'taxonomy' => 'tenure',
+			            'field'    => 'term_id',
+			            'terms'    => $tenure,
+			        ),
+			 );
+		}
 		$properties = new WP_Query($args);
 		if($properties->have_posts()):
 			while($properties->have_posts()): 
@@ -295,5 +335,6 @@ class PropertiesClass{
     );
     exit;
 	}
+
 
 }

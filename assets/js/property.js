@@ -8,11 +8,13 @@ jQuery(document).ready(function(){
 		console.log('loadmore clicked.');
 		let currentPage = jQuery('#property-listing-page').val();
 		let perPage = jQuery('#property-listing-perpage').val();
+    let tenure = jQuery('#property-listing-tenure').val();
 		let loadmoreBtn = jQuery(this);
 		let ajaxData = {
       'action'	: 'properties_loadmore',
       'paged'		: currentPage,
-      'posts_per_page'		: perPage
+      'posts_per_page'		: perPage,
+      'tenure'  : tenure
     };
     console.log(ajaxData);
     jQuery.ajax({

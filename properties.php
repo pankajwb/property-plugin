@@ -12,4 +12,7 @@
 // Include main class file
 include( plugin_dir_path( __FILE__ ) .'properties_class.php');
 new PropertiesClass();
+// Include filters class
+include( plugin_dir_path( __FILE__ ) .'filters_class.php');
+
 ?>

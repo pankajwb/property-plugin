@@ -14,3 +14,13 @@
 	width: 100%;
 	justify-content: center;
 }
+/*Margins and paddings*/
+.ml-1{
+	margin-left: 1rem;
+}
+.ml-3{
+	margin-left: 3rem;
+}
+.ml-5{
+	margin-left: 5rem;
+}
