@@ -1,0 +1,16 @@
+/* 
+* properties plugin css 
+*/
+.page-numbers{
+	margin: 0px 5px;
+	border: 1px solid #007bff;
+	padding: 5px 10px;
+}
+.page-numbers.current{
+	border: 1px solid #000;
+}
+.pagination, .properties-loadmore-wrapper{
+	display: flex;
+	width: 100%;
+	justify-content: center;
+}
