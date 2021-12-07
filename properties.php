@@ -1,11 +1,11 @@
 <?php
 /**
-* Plugin Name: Hestabit Property Plugin
+* Plugin Name: Property Plugin
 * Plugin URI: https://www.yourwebsiteurl.com/
 * Description: This is a custom plugin for property features
 * Version: 1.0
 * Author: Hestabit
-* Author URI: http://hestabit.in/
+* Author URI: https://github.com/pankajwb
 **/
 
 
