@@ -4,7 +4,7 @@
 * Plugin URI: https://www.yourwebsiteurl.com/
 * Description: This is a custom plugin for property features
 * Version: 1.0
-* Author: Hestabit
+* Author: pankajwb
 * Author URI: https://github.com/pankajwb
 **/
 
